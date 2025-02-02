@@ -20,8 +20,9 @@ use tokio::io;
 use warp;
 use warp::Filter;
 mod content;
+use table_to_html::HtmlTable;
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, serde::Serialize)]
 struct PlanInfo {
     name: String,               //Done
     price: String,              //Done
@@ -36,7 +37,20 @@ struct PlanInfo {
 }
 impl std::fmt::Display for PlanInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Category: {} | Name: {} | Price: {} | Price per day: {} | Price per GB: {} | Data at high speed: {} | Total Data : {} | Validity: {} | Description: {:.45} | Call Available: {} <br/> <br/>", self.category, self.name, self.price, self.price_per_day, self.price_per_gb, self.data_at_high_speed, self.total_data, self.validity, self.description, self.call_available)
+        write!(
+            f,
+            "{} | {} | {} | {} | {} | {} | {} | {} | {:.40} | {} ",
+            self.category,
+            self.name,
+            self.price,
+            self.price_per_day,
+            self.price_per_gb,
+            self.data_at_high_speed,
+            self.total_data,
+            self.validity,
+            self.description,
+            self.call_available
+        )
     }
 }
 
@@ -154,10 +168,20 @@ async fn main() -> io::Result<()> {
                 let p_data = parsed_data.clone();
                 let parsed_data_inner = p_data.lock().unwrap();
                 let response = match parsed_data_inner.as_ref(){
-                    Ok(plan_info_list) => plan_info_list.iter().fold(
-                        String::new(),
-                        |acc, plan_info| acc + &format!("{:#?}", plan_info),
-                    ),
+                    Ok(plan_info_list) => {
+                        let plan_info_list_simple = plan_info_list.iter().map(|x| x.to_string().split("|").fold(
+                            Vec::new(),
+                            |mut acc, x| {
+                                acc.push(x.to_string());
+                                acc
+                            }
+                        )).collect::<Vec<Vec<String>>>();
+                        let t_header = content::T_HEADER.iter().map(|x| x.to_string()).collect::<Vec<String>>();
+                        let table_with_header = vec![t_header].into_iter().chain(plan_info_list_simple.into_iter()).collect::<Vec<Vec<String>>>();
+                        let mut table = HtmlTable::new(table_with_header);
+                        table.set_border(2);
+                        table.to_string()
+                    }
                     Err(e) => format!("Something is fishy, contact me through mailto:karupal2002@gmail.com, with the following : {:#?}", e),
                 };
                 let total_res = format!("{}{}{}", content::HEADER, response, content::FOOTER);

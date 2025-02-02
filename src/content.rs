@@ -15,5 +15,18 @@ pub const FOOTER : &str = "
             <p> India is in a stage where we need data everyday when we are outside our home (for UPI and what not). At home I have wifi, so I don't need a lot of data. </p>
             <h4> Why did I build this site? </h4> 
             <p> I believe that people should always have transparency in the money they are spending, they deserve to know transparently how much they are spending and any metrics that can help them consiously influence they spending behaviour. Companies do everything in their power to avoid this, from hiding the price of their products to making it hard to compare. And I got tired of Jio constantly changing their plans. </p>
+            <p> Is this too much for a couple 100 rupees a year? Maybe...</p>
                     </body>
                     </html>";
+pub const T_HEADER: [&str; 10] = [
+    "Category",
+    "Name",
+    "Price",
+    "Price Per Day",
+    "Price Per GB",
+    "High Speed data",
+    "Total data",
+    "Validity",
+    "Description",
+    "Calling",
+];
