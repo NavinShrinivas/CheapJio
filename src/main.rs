@@ -1,15 +1,14 @@
 /*
- * Author: P K Navin Shrinivas 
- * Email: karupal2002@gmail.com 
+ * Author: P K Navin Shrinivas
+ * Email: karupal2002@gmail.com
  * Website: https://navinshrinivas.com
  *
  * This code is entirely contained in a single file.
- * This script refreshes data from JIO api every 5 minutes, parses it 
+ * This script refreshes data from JIO api every 5 minutes, parses it
  * sorts it and presents it in a HTML page.
  *
- * I have no frontend for this, this backed itself served the frontend as a simple HTML.
+ * I have no frontend for this, this backed itself serves the frontend as a simple HTML.
  */
-
 
 use chrono;
 use log::info;
@@ -33,7 +32,7 @@ struct PlanInfo {
     description: String,        //Done
     call_available: bool,       //Done
     category: String,           //Done
-    total_data: String,
+    total_data: String,         //Done
 }
 impl std::fmt::Display for PlanInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -139,8 +138,6 @@ async fn main() -> io::Result<()> {
     logger = logger.with_level(log::LevelFilter::Info); //Setting default
     logger = logger.env();
     logger.init().unwrap();
-    //sleep for 5 seconds
-    // tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
     info!("Application Starting...");
 
     let (tx, rx) = channel();
@@ -167,7 +164,7 @@ async fn main() -> io::Result<()> {
                 return warp::reply::html(total_res);
             },
         );
-    let warp_server = warp::serve(routes).run(([0,0,0,0], 3030));
+    let warp_server = warp::serve(routes).run(([0, 0, 0, 0], 3030));
     let fetch_job = tokio::spawn(async move {
         fetch_jio_plans_loop(parsed_data_ctx.clone(), rx).await;
     });
