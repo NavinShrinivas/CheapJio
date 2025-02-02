@@ -167,7 +167,7 @@ async fn main() -> io::Result<()> {
                 return warp::reply::html(total_res);
             },
         );
-    let warp_server = warp::serve(routes).run(([127, 0, 0, 1], 3030));
+    let warp_server = warp::serve(routes).run(([0,0,0,0], 3030));
     let fetch_job = tokio::spawn(async move {
         fetch_jio_plans_loop(parsed_data_ctx.clone(), rx).await;
     });
