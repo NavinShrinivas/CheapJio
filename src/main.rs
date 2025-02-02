@@ -218,7 +218,16 @@ async fn fetch_jio_plans_loop(
 
 async fn refresh_jio_data() -> Result<Vec<PlanInfo>, CheapJioErr> {
     info!("Refreshing JIO plans data...Happens every 5 minutes");
-    let resp = match reqwest::get(JIO_API).await {
+
+    let resp = match reqwest::Client::builder()
+        .danger_accept_invalid_hostnames(true)
+        .danger_accept_invalid_certs(true)
+        .build()
+        .unwrap()
+        .get(JIO_API)
+        .send()
+        .await
+    {
         Ok(resp) => match resp.json::<serde_json::Value>().await {
             Ok(value) => value,
             Err(e) => {
