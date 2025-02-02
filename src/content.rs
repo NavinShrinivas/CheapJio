@@ -2,8 +2,9 @@ pub const HEADER : &str = "<html>
                     <body>
                         <h2> Sorted Jio Plan with more info </h2>
                         <h3> Hello! I see you want to save some amount on your Jio Recharge. I hope this data helps you!</h3>
-                        <h4> This data is refreshed every 5 minutes, parsed and presented here. If you have any suggestions or feedback, please feel free to reach out to me at karupal2002@gmail.com </h4>
-                        <h4> If you wanna see the code behind this and my other works, click <a href=\"https://navinshrinivas.com\">here</a>. If you wanna see the sorting logic, scroll down!</h4>";
+                        <h4> If you wanna see the code behind this and my other works, click <a href=\"https://navinshrinivas.com\">here</a>. If you wanna see the sorting logic, scroll down!</h4>
+                        <h4> This data is refreshed every 5 minutes, parsed, sorted and presented here. If you have any suggestions or feedback, please feel free to reach out to me at karupal2002@gmail.com </h4>
+                        ";
 pub const FOOTER : &str = "
         <h4> Sorting Logic </h4>
         <ul>
